@@ -190,7 +190,6 @@ a:focus {
 /* Inner elements */
 .room__img {
 	flex: none;
-	max-width: 80%;
     height: 80%;
 	margin: 0 5%;
 	transform: translate3d(0,0,10px);
