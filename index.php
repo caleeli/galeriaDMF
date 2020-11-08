@@ -55,7 +55,7 @@ require 'config.php';
 		</div><!-- /container -->
 		<div class="content">
 			<header class="codrops-header">
-				<div class="codrops-links">
+				<div class="codrops-links" style="visibility:hidden;">
 					<a class="codrops-icon codrops-icon--prev" href="<?= $exit ?>" title="Salir"><svg class="icon icon--arrow"><use xlink:href="#icon-arrow"></use></svg></a>
 					<a class="codrops-icon codrops-icon--drop" href="<?= $gota ?>" title="Gota"><svg class="icon icon--drop"><use xlink:href="#icon-drop"></use></svg></a>
 				</div>
