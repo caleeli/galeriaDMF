@@ -176,14 +176,14 @@
 						// transform values
 						rotX = tiltRotation.rotateX ? initTransform.rotateX -  (2 * tiltRotation.rotateX / win.height * mousepos.y - tiltRotation.rotateX) : 0,
 						rotY = tiltRotation.rotateY ? initTransform.rotateY -  (2 * tiltRotation.rotateY / win.width * mousepos.x - tiltRotation.rotateY) : 0;
-			
+			console.log(rotX);
 					// apply transform
 					applyRoomTransform({
-						'translateX' : initTransform.translateX, 
-						'translateY' : initTransform.translateY, 
-						'translateZ' : initTransform.translateZ, 
+						'translateX' : initTransform.translateX,
+						'translateY' : initTransform.translateY,
+						'translateZ' : initTransform.translateZ,
 						'rotateX' : rotX + 'deg', 
-						'rotateY' : rotY + 'deg',
+						'rotateY' : (rotY * (1 - Math.abs(rotX)) * 5) + 'deg',
 						'rotateZ' : initTransform.rotateZ
 					});
 				});
