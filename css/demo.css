@@ -411,7 +411,7 @@ a:focus {
 }
 
 .overlay--menu {
-	background: rgba(255,25,25,0.66);
+	background: #138935A0;
 }
 
 .js .overlay--active {
