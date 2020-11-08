@@ -200,6 +200,15 @@ a:focus {
 	border-bottom: 8px solid black;
 }
 
+.img__card {
+	border: 4pt solid black;
+	background-color: white;
+	color: black;
+	max-width: 20em;
+	font-size: 18pt;
+	padding: 1em;
+}
+
 /* Content */
 .content {
 	position: absolute;
