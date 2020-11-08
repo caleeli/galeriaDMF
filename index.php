@@ -15,6 +15,7 @@ require 'config.php';
 		<link rel="stylesheet" type="text/css" href="css/normalize.css?<?= time() ?>" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css?<?= time() ?>" />
 		<script>document.documentElement.className = 'js';</script>
+		<?php require 'youtube_player.php'; ?>
 	</head>
 	<body>
 		<svg class="hidden">
