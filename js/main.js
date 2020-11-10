@@ -176,16 +176,17 @@
 					const zmin = 500;
 					const zmax = 1500;
 					const Zm = zmax - zmin;
-					const zk = (zmax - zmin) / ymid;
+					const Zm2 = Zm * 2 / 5;
+					//const zk = (zmax - zmin) / ymid;
 					const alphaMax = 90;
-					const ak = alphaMax / xmid;
+					//const ak = alphaMax / xmid;
 					const x1 = 1.5/7*win.width;
 					const x2 = 2.5/7*win.width;
 					const x3 = 4.5/7*win.width;
 					const x4 = 5.5/7*win.width;
 					const ymarg = 100;
 					const A = Zm / x1;
-					const B = Zm / (x2- x1);
+					const B = (Zm - Zm2) / (x2- x1);
 					const C = alphaMax / (x2- x1);
 					const D = 1 / (ymid - ymarg);
 
@@ -202,8 +203,8 @@
 						0));
 					var z = zmin + (x<x1 ? x*A :
 						(x<x2 ? Zm-B*(x-x1) :
-						(x<x3 ? 0 :
-						(x<x4 ? B*(x-x3):
+						(x<x3 ? Zm2 :
+						(x<x4 ? Zm2 + B*(x-x3):
 						(Zm-A*(x-x4)))))) * factor;
 					initTransform.translateZ = `${z}px`;
 					//var alpha = Math.max(-40,Math.min(40,(-alphaMax + mousepos.x * ak)* (1 - Math.abs(rotX))));
