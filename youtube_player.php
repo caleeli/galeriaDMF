@@ -22,9 +22,12 @@
         });
     }
     function playVideo(id) {
+        const tv = players.find(p => p.id === id).tv;
         players.forEach(p => {
-            window.document.getElementById(p.id).style.display = 'none';
-            window.document.getElementById(p.tv).style.display = 'none';
+            if (p.tv === tv) {
+                window.document.getElementById(p.id).style.display = 'none';
+                window.document.getElementById(p.tv).style.display = 'none';
+            }
             window[`${p.id}_player`].stopVideo();
         });
         window[`${id}_player`].playVideo();
@@ -32,8 +35,10 @@
     }
     function stopTv(tv) {
         players.forEach(p => {
-            window.document.getElementById(p.id).style.display = 'none';
-            window[`${p.id}_player`].stopVideo();
+            if (p.tv === tv) {
+                window.document.getElementById(p.id).style.display = 'none';
+                window[`${p.id}_player`].stopVideo();
+            }
         });
         window.document.getElementById(tv).style.display = 'block';
     }
