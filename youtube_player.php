@@ -39,9 +39,9 @@
     }
 </script>
 <?php
-function youtube($id, $width, $height, $videoId, $tv) {
+function youtube($id, $width, $height, $videoId, $tv, $class='youtube-player') {
     ?>
-<div id="<?=$id?>" class="youtube-player" style="display:none;"></div>
+<div id="<?=$id?>" class="<?=$class?>" style="display:none;"></div>
 <script>
     players.push({
         id: <?= json_encode($id) ?>,

@@ -82,7 +82,7 @@
 		// Total number of rooms.
 		totalRooms = DOM.rooms.length,
 		// Initial transform.
-		initTransform = { translateX : 0, translateY : 0, translateZ : '500px', rotateX : 0, rotateY : 0, rotateZ : 0 },
+		initTransform = { translateX : 0, translateY : 0, translateZ : '500px', rotateX : 0, rotateY : 0, rotateZ : 0, rotateFactor: 5 },
 		// Reset transform.
 		resetTransform = { translateX : 0, translateY : 0, translateZ : 0, rotateX : 0, rotateY : 0, rotateZ : 0 },
 		// View from top.
@@ -171,19 +171,61 @@
 				requestAnimationFrame(function() {
 					if( !tilt ) return false;
 
+					const xmid = win.width / 2;
+					const ymid = win.height / 2;
+					const zmin = 500;
+					const zmax = 1500;
+					const Zm = zmax - zmin;
+					const zk = (zmax - zmin) / ymid;
+					const alphaMax = 90;
+					const ak = alphaMax / xmid;
+					const x1 = 1.5/7*win.width;
+					const x2 = 2.5/7*win.width;
+					const x3 = 4.5/7*win.width;
+					const x4 = 5.5/7*win.width;
+					const ymarg = 100;
+					const A = Zm / x1;
+					const B = Zm / (x2- x1);
+					const C = alphaMax / (x2- x1);
+					const D = 1 / (ymid - ymarg);
 
-					var mousepos = getMousePos(ev),
-						// transform values
-						rotX = tiltRotation.rotateX ? initTransform.rotateX -  (2 * tiltRotation.rotateX / win.height * mousepos.y - tiltRotation.rotateX) : 0,
-						rotY = tiltRotation.rotateY ? initTransform.rotateY -  (2 * tiltRotation.rotateY / win.width * mousepos.x - tiltRotation.rotateY) : 0;
-			console.log(rotX);
+					var mousepos = getMousePos(ev);
+					var x = mousepos.x;
+					var y = mousepos.y;
+					var rotX = tiltRotation.rotateX ? initTransform.rotateX -  (2 * tiltRotation.rotateX / win.height * mousepos.y - tiltRotation.rotateX) : 0;
+					//var rotY = tiltRotation.rotateY ? initTransform.rotateY -  (2 * tiltRotation.rotateY / win.width * mousepos.x - tiltRotation.rotateY) : 0;
+
+					//initTransform.translateZ = `${zmax+(mousepos.y < ymid ? zk : -zk)*(mousepos.y - ymid)}px`;
+					var factor = y < ymarg ? 0 :
+						(y < ymid ? D * (y-ymarg) :
+						(y < win.height - ymarg ? 1 - D *(y-ymid) :
+						0));
+					var z = zmin + (x<x1 ? x*A :
+						(x<x2 ? Zm-B*(x-x1) :
+						(x<x3 ? 0 :
+						(x<x4 ? B*(x-x3):
+						(Zm-A*(x-x4)))))) * factor;
+					initTransform.translateZ = `${z}px`;
+					//var alpha = Math.max(-40,Math.min(40,(-alphaMax + mousepos.x * ak)* (1 - Math.abs(rotX))));
+					var alpha = (x<x1 ? -alphaMax :
+						(x<x2 ? -alphaMax + C * (x-x1) :
+						(x<x3 ? 0 :
+						(x<x4 ? C * (x-x3) :
+						(alphaMax))))) * factor;
+					if (alpha < -35) {
+						document.getElementById('container').className = `container hide-right`;
+					} else if (alpha > 35) {
+						document.getElementById('container').className = `container hide-left`;
+					} else {
+						document.getElementById('container').className = `container`;
+					}
 					// apply transform
 					applyRoomTransform({
 						'translateX' : initTransform.translateX,
 						'translateY' : initTransform.translateY,
 						'translateZ' : initTransform.translateZ,
 						'rotateX' : rotX + 'deg', 
-						'rotateY' : (rotY * (1 - Math.abs(rotX)) * 5) + 'deg',
+						'rotateY' : `${alpha}deg`, //(rotY * (1 - Math.abs(rotX)) * initTransform.rotateFactor) + 'deg',
 						'rotateZ' : initTransform.rotateZ
 					});
 				});
@@ -211,8 +253,10 @@
 	}
 
 	function applyRoomTransform(transform) {
-		DOM.scroller.style.transform = 'translate3d(' + transform.translateX + ', ' + transform.translateY + ', ' + transform.translateZ + ') ' +
-									   'rotate3d(1,0,0,' + transform.rotateX + ') rotate3d(0,1,0,' + transform.rotateY + ') rotate3d(0,0,1,' + transform.rotateZ + ')';
+		//DOM.scroller.style.transform = 'translate3d(' + transform.translateX + ', ' + transform.translateY + ', ' + transform.translateZ + ') ' +
+		//							   'rotate3d(1,0,0,' + transform.rotateX + ') rotate3d(0,1,0,' + transform.rotateY + ') rotate3d(0,0,1,' + transform.rotateZ + ')';
+		DOM.scroller.style.transform = 'rotate3d(1,0,0,' + transform.rotateX + ') rotate3d(0,1,0,' + transform.rotateY + ') rotate3d(0,0,1,' + transform.rotateZ + ')' +
+									   'translate3d(' + transform.translateX + ', ' + transform.translateY + ', ' + transform.translateZ + ') ';
 	}
 
 	function applyRoomTransition(transition) {

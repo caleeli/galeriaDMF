@@ -146,11 +146,17 @@ a:focus {
 /* @david: paredes */
 .room__side--left,
 .room__side--right {
-	padding-left: 700px;
-	padding-right: 700px;
+	padding-left: 400px;
+	padding-right: 400px;
 	width: 2500px; /* depth */
 	height: 100vh;
 	background: #dbdbdb;
+}
+.container.hide-left .room__side--left {
+	display: none;
+}
+.container.hide-right .room__side--right {
+	display: none;
 }
 
 .room__side--back {
@@ -212,6 +218,9 @@ a:focus {
 .youtube-player {
 	border: 8pt inset #e9e9e9;
 	background-color: black;
+}
+.youtube-player-audio {
+	display: none!important;
 }
 
 /* Content */
