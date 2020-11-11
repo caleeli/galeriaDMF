@@ -72,8 +72,12 @@ require 'config.php';
 				</button>
 				<div class="overlay overlay--menu">
 					<ul class="menu">
-						<li class="menu__item menu__item--current"><a class="menu__link" href="#">Exhibiciones</a></li>
-						<li class="menu__item"><a class="menu__link" href="#">Visitamos</a></li>
+						<li class="menu__item"><a class="menu__link" href="#"><span class="dia">miércoles 11</span><span class="hora"> 19:00&nbsp;</span><span class="evento">Filosofía y Arte: Reflexiones sobre la canción popular latinoamericana</span></a></li>
+						<li class="menu__item"><a class="menu__link" href="#"><span class="dia">miércoles 11</span><span class="hora"> 20:00&nbsp;</span><span class="evento">Galería Virtual: El arte y los procesos de transformación</span></a></li>
+						<li class="menu__item"><a class="menu__link" href="#"><span class="dia">jueves 12</span><span class="hora"> 19:00&nbsp;</span><span class="evento">Filosofía y Arte: El arte como factor de transformación</span></a></li>
+						<li class="menu__item"><a class="menu__link" href="#"><span class="dia">viernes 13</span><span class="hora"> 19:00&nbsp;</span><span class="evento">Taller: Arte y Filosofía del Renacimiento</span></a></li>
+						<li class="menu__item"><a class="menu__link" href="#"><span class="dia">sábado 14</span><span class="hora"> 19:00&nbsp;</span><span class="evento">Taller: Arte y Filosofía del Renacimiento</span></a></li>
+						<li class="menu__item"><a class="menu__link" href="#"><span class="dia">miércoles 18</span><span class="hora"> 19:00&nbsp;</span><span class="evento">Filosofía y Sociedad: Filosofía y voluntariado como motor de cambio</span></a></li>
 					</ul>
 				</div>
 				<div class="overlay overlay--info">

@@ -448,10 +448,22 @@ a:focus {
 }
 
 .menu__item {
-	font-size: 7vh;
+	font-size: 4vh;
 	margin: 0.25em 0;
 	padding: 0;
-	text-transform: lowercase;
+
+}
+
+.menu__item .dia {
+	display: inline-block;
+	width: 7em;
+	min-width: 7em;
+}
+.menu__item .hora {
+	display: inline-block;
+}
+.menu__item .evento {
+	display: inline-block;
 }
 
 .menu__item--current {
@@ -460,6 +472,9 @@ a:focus {
 
 .menu__link {
 	color: #fff;
+	display: flex;
+	flex-flow: row;
+	flex-wrap: nowrap;
 }
 
 .menu__link:focus,
