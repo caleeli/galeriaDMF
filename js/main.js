@@ -89,7 +89,7 @@
 		menuTransform = { translateX : 0, translateY : '150%', translateZ : 0, rotateX : '15deg', rotateY : 0, rotateZ : 0 },
 		menuTransform = { translateX : 0, translateY : '50%', translateZ : 0, rotateX : '-10deg', rotateY : 0, rotateZ : 0 },
 		// Info view transform.
-		infoTransform = { translateX : 0, translateY : 0, translateZ : '200px', rotateX : '2deg', rotateY : 0, rotateZ : '4deg' },
+		infoTransform = { translateX : 0, translateY : 0, translateZ : '200px', rotateX : '0deg', rotateY : 0, rotateZ : '0deg' },
 		// Room initial moving transition.
 		initTransition = { speed: '0.9s', easing: 'ease' },
 		// Room moving transition.
@@ -241,7 +241,13 @@
 
 		// Room navigation.
 		var onNavigatePrevFn = function() { navigate('prev'); },
-			onNavigateNextFn = function() { navigate('next'); };
+			onNavigateNextFn = function() {
+				navigate('next').then(() => {
+					if (currentRoom == 1) {
+						setTimeout(() => {toggleInfo();}, 200);
+					}
+				});
+			};
 
 		DOM.nav.leftCtrl.addEventListener('click', onNavigatePrevFn);
 		DOM.nav.rightCtrl.addEventListener('click', onNavigateNextFn);
@@ -313,60 +319,63 @@
 	}
 
 	function navigate(dir) {
-		if( isMoving || isNavigating ) {
-			return false;
-		}
-		isNavigating = true;
-		
-		var room = DOM.rooms[currentRoom];
-		
-		// Remove tilt.
-		removeTilt();
-		// Animate the current slide out - animate the name, title and date elements.
-		hideSlide();
-
-		// Update currentRoom.
-		if( dir === 'next' ) {
-			currentRoom = currentRoom < totalRooms - 1 ? currentRoom + 1 : 0;
-		}
-		else {
-			currentRoom = currentRoom > 0 ? currentRoom - 1 : totalRooms - 1;
-		}
-
-		// Position the next room.
-		var nextRoom = DOM.rooms[currentRoom];
-		nextRoom.style.transform = 'translate3d(' + (dir === 'next' ? 100 : -100) + '%,0,0) translate3d(' + (dir === 'next' ? 1 : -1) + 'px,0,0)' ;
-		nextRoom.style.opacity = 1;
-		
-		// Move back.
-		move({transition: roomTransition, transform: resetTransform})
-		.then(function() {
-			// Move left or right.
-			return move({transform: { translateX : (dir === 'next' ? -100 : 100) + '%', translateY : 0, translateZ : 0, rotateX : 0, rotateY : 0, rotateZ : 0 }});
-		})
-		.then(function() {
-			// Update current room class.
-			nextRoom.classList.add('room--current');
-			room.classList.remove('room--current');
-			room.style.opacity = 0;
-
-			// Show the next slide.
-			showSlide();
-
-			// Move into room.
-			// Update final transform state:
-			return move({transform: { translateX : (dir === 'next' ? -100 : 100) + '%', translateY : 0, translateZ : '500px', rotateX : 0, rotateY : 0, rotateZ : 0 }});
-		})
-		.then(function() {
-			// Reset positions.
-			applyRoomTransition('none');
-			nextRoom.style.transform = 'translate3d(0,0,0)';
-			applyRoomTransform(initTransform);
+		return new Promise((complete) => {
+			if( isMoving || isNavigating ) {
+				return false;
+			}
+			isNavigating = true;
 			
-			setTimeout(function() {
-				initTilt();
-			}, 60);
-			isNavigating = false;
+			var room = DOM.rooms[currentRoom];
+			
+			// Remove tilt.
+			removeTilt();
+			// Animate the current slide out - animate the name, title and date elements.
+			hideSlide();
+	
+			// Update currentRoom.
+			if( dir === 'next' ) {
+				currentRoom = currentRoom < totalRooms - 1 ? currentRoom + 1 : 0;
+			}
+			else {
+				currentRoom = currentRoom > 0 ? currentRoom - 1 : totalRooms - 1;
+			}
+	
+			// Position the next room.
+			var nextRoom = DOM.rooms[currentRoom];
+			nextRoom.style.transform = 'translate3d(' + (dir === 'next' ? 100 : -100) + '%,0,0) translate3d(' + (dir === 'next' ? 1 : -1) + 'px,0,0)' ;
+			nextRoom.style.opacity = 1;
+			
+			// Move back.
+			move({transition: roomTransition, transform: resetTransform})
+			.then(function() {
+				// Move left or right.
+				return move({transform: { translateX : (dir === 'next' ? -100 : 100) + '%', translateY : 0, translateZ : 0, rotateX : 0, rotateY : 0, rotateZ : 0 }});
+			})
+			.then(function() {
+				// Update current room class.
+				nextRoom.classList.add('room--current');
+				room.classList.remove('room--current');
+				room.style.opacity = 0;
+	
+				// Show the next slide.
+				showSlide();
+	
+				// Move into room.
+				// Update final transform state:
+				return move({transform: { translateX : (dir === 'next' ? -100 : 100) + '%', translateY : 0, translateZ : '500px', rotateX : 0, rotateY : 0, rotateZ : 0 }});
+			})
+			.then(function() {
+				// Reset positions.
+				applyRoomTransition('none');
+				nextRoom.style.transform = 'translate3d(0,0,0)';
+				applyRoomTransform(initTransform);
+				
+				setTimeout(function() {
+					initTilt();
+				}, 60);
+				isNavigating = false;
+				complete();
+			});
 		});
 	}
 
@@ -521,13 +530,13 @@
 		// Show info text and animate photos out of the walls.
 		var photos = DOM.rooms[currentRoom].querySelectorAll('.room__img');
 		anime.remove(photos);
-		anime({
+		/*anime({
 			targets: photos,
 			duration: function() {
 				return anime.random(1500, 3000);
 			},
 			easing: [0.3,1,0.3,1],
-		});
+		});*/
 		// Animate info text and overlay.
 		anime.remove([DOM.infoOverlay, DOM.infoText]);
 		var animeInfoOpts = {

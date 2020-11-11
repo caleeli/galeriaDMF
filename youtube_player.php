@@ -10,11 +10,9 @@
             videoId: p.videoId,
             events: {
                 onReady (event) {
-                    console.log('onReady', event);
                     p.onReady && p.onReady(event);
                 },
                 onStateChange (event) {
-                    console.log('onStateChange', event);
                     p.onStateChange && p.onStateChange(event);
                 },
             }
