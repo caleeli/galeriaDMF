@@ -14,7 +14,7 @@
     <?php
         foreach(glob(__DIR__.'/left_*.*') as $file) {
             if (substr($file,-3, 3) === 'jpg') {
-                echo '<img class="room__img" src="', substr($file, strlen(getcwd()) + 1) ,'?<?= time() ?>" />';
+                echo '<img class="room__img" src="', substr($file, strlen(getcwd()) + 1) ,'?<?= time() ?>"  style="margin-left:40em;"/>';
             } elseif (substr($file,-3, 3) === 'php') {
                 @include(substr($file,0, -3) . 'php');
             }
